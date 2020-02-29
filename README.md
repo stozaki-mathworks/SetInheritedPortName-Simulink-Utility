@@ -23,3 +23,6 @@ Set the port block name and propagation signal name.
 1. The range of the block selected with the mouse is targeted.
 2. Inherit the name set at the upstream. (Including when straddling a hierarchy)
 For the detailed operation method, please decompress the ZIP file and watch the movie.
+
+See below for detailed operations
+https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/master/DetaileOoperation.gif
