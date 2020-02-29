@@ -22,3 +22,4 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABI
 Set the port block name and propagation signal name.
 1. The range of the block selected with the mouse is targeted.
 2. Inherit the name set at the upstream. (Including when straddling a hierarchy)
+For the detailed operation method, please decompress the ZIP file and watch the movie.
