@@ -33,3 +33,8 @@ https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/m
 
 操作方法は以下のgif動画にて確認してください。
 https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/master/DetaileOoperation.gif
+
+本ユーティリティの使用目的はJMAABガイドラインjc_0008及びjc_0009を遵守するためです。
+https://jp.mathworks.com/help/slcheck/ref/japan-mbd-automotive-advisory-board-checks.html#mw_d60c90ef-1b61-495c-b153-961a1aa60b1b.bruusd2-1
+
+https://jp.mathworks.com/help/slcheck/ref/japan-mbd-automotive-advisory-board-checks.html#mw_d60c90ef-1b61-495c-b153-961a1aa60b1b.bruuqn8-1
