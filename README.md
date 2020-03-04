@@ -26,3 +26,10 @@ For the detailed operation method, please decompress the ZIP file and watch the 
 
 See below for detailed operations
 https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/master/DetaileOoperation.gif
+
+本ユーティリティはSimulinkモデルにおいて、サブシステムを跨ぐ場合に、以下の操作をマウスで実行するものです。
+1. 伝播信号の設定
+2. サブシステム内の入力ポート名を上流側信号と一致させる。また、サブシステムの上位側の出力ポートブロック名をサブシステム内の信号名に一致させる
+
+操作方法は以下のgif動画にて確認してください。
+https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/master/DetaileOoperation.gif
