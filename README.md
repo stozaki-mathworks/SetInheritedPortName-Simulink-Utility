@@ -1,4 +1,4 @@
-# SimulinkUtility_SetInheritedPortName
+# Simulink-Utility-SetInheritedPortName
 
 Copyright (c) 2020, The MathWorks, Inc.
 All rights reserved.
