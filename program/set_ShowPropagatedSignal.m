@@ -13,16 +13,30 @@ function set_ShowPropagatedSignal(Blocks)
 % (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
 % HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 % (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+% ●関数：set_outportname - システム内の選択したOutport に接続されている信号の名前をつける
+% [Input]
+%   system : 対象のシステム (指定しない場合、カレントシステム)
 if ~exist('system','var')
     Blocks = gcbh;
 end
-% Get block type when right-clicking on block
+% ブロックを右クリックしたとき、ブロックタイプを取得する
 tempParent = get_param(Blocks, 'Parent');
 try
 isMask = get_param(tempParent,'Mask');
 catch %#ok<CTCH>
    isMask = 'off'; 
+end
+
+try
+    RTWCodeVal = get_param(tempParent,'RTWSystemCode');
+catch
+    RTWCodeVal = '';
+end
+if strcmp(RTWCodeVal,'Reusable function')
+    fprintf('警告 : Inportブロックは再利用可能関数内部のブロックです。\n');
+    return
+else
+    % 何もしない
 end
 
 MOutPortsLists = find_system(gcs,'SearchDepth', 1,'Selected', 'on');
@@ -32,55 +46,94 @@ for m = 1:length(MOutPortsLists)
     BlkType = get_param(MOutPortsLists{m},'BlockType');
     Blocks  = get_param(MOutPortsLists{m},'Handle');
     
-% When the target block is an Inport block
+% 対象ブロックがInportブロックの場合
 if strcmp(BlkType,'Inport')
     
-    % Get line handle to get signal name of connected signal line or inherited signal name
+    % 接続される信号線の信号名、または継承信号名を取得するため、ラインハンドルを取得
     LineHandles = get_param(Blocks,'LineHandles'); 
     
+    % InportブロックのラインハンドルはOutport属性のみ持っている
     OutportLineH = LineHandles.Outport;             
     
     if ishandle(OutportLineH)
         SrcPortH   = get_param(OutportLineH,'SrcPortHandle');
         
-        % Get signal name to display target signal name in error message when propagation cannot be displayed
+        % 伝播表示できない場合のエラーメッセージに対象の信号名を表示するために信号名取得
         SignalName = get_param(SrcPortH,'Name');            
                 try
-                    % Turn on the option to display propagation signal names
+                    % 伝播信号名を表示するオプションをONにする
                     if ~strcmp(isMask,'on')
-                    % Turn off and then on
+                    % バージョンによって、ON/OFFの切替えが安定しないため、一度OFFにしてからONにすると確実に設定が反映される
                         set_param(SrcPortH,'ShowPropagatedSignals','off');    
                         set_param(SrcPortH,'ShowPropagatedSignals','on');
                     else
-                        fprintf('warning : Propagation display is not performed for blocks in the mask.: %s\n%s\n', SignalName);
+                        fprintf('警告 : マスク内のブロックのため伝播表示を行いません。: %s\n%s\n', SignalName);
                     end
                 catch ME
-                    fprintf('warning : This signal cannot be displayed for propagation. Or a block inside the library.: %s\n%s\n', SignalName,ME.message);
+                    fprintf('警告 : 伝播表示が出来ない信号です。または、ライブラリ内部のブロックです。: %s\n%s\n', SignalName,ME.message);
                 end         
     end
-% When the target block is an Outport block 
+% 対象ブロックがOutportブロックの場合    
 elseif strcmp(BlkType,'Outport')
-    
+
+    % 接続される信号線の信号名、または継承信号名を取得するため、ラインハンドルを取得
     LineHandles = get_param(Blocks,'LineHandles'); 
     
+    % InportブロックのラインハンドルはOutport属性のみ持っている
     InportLineH = LineHandles.Inport;        
     
     if ishandle(InportLineH)
         SrcPortH   = get_param(InportLineH,'SrcPortHandle');
-        
+
         if SrcPortH ~= -1
+            SrcBlkH   = get_param(InportLineH,'SrcBlockHandle');
+            SrcBlkType = get_param(SrcBlkH,'BlockType');
+            if strcmp(SrcBlkType,'SubSystem')
+                % 接続元のサブシステムが再利用可能もしくはライブラリの場合はreturnする 
+            else
+
+            end            
+        % 伝播表示できない場合のエラーメッセージに対象の信号名を表示するために信号名取得
         SignalName = get_param(SrcPortH,'Name');            
                 try
+                    % 伝播信号名を表示するオプションをONにする
+                    % バージョンによって、ON/OFFの切替えが安定しないため、一度OFFにしてからONにすると確実に設定が反映される
                     set_param(SrcPortH,'ShowPropagatedSignals','off');
                     set_param(SrcPortH,'ShowPropagatedSignals','on');
                 catch ME
-                    fprintf('warning : This signal cannot be displayed for propagation.: %s\n%s\n', SignalName,ME.message);
+                    fprintf('警告 : 伝播表示が出来ない信号です。: %s\n%s\n', SignalName,ME.message);
                 end     
         else
-            fprintf('warning : Outport block is not connected.\n');
+            fprintf('警告 : Outportブロックは未接続です。\n');
         end
-    end    
+    end
+% 対象ブロックがサブシステムの場合    
+elseif strcmp(BlkType,'SubSystem')
+    FunctionType = get_param(MOutPortsLists{m},'RTWSystemCode');
+    % 再利用可能関数は伝播信号をONにしない
+    if ~strcmp(FunctionType,'Reusable function')
+        isLibs = get_param(MOutPortsLists{m},'ReferenceBlock');
+        if isempty(isLibs)
+            % サブシステムのポートハンドルを取得
+            SubsysPortH = get_param(MOutPortsLists{m},'PortHandles');
+            % 出力ポートハンドル数で繰り返す
+            % 未接続の場合set_paramをしても警告が出力しないためプログラムでは何もしない
+            for portN = 1:length(SubsysPortH.Outport)
+                try
+                    set_param(SubsysPortH.Outport(portN),'ShowPropagatedSignals','off');
+                    set_param(SubsysPortH.Outport(portN),'ShowPropagatedSignals','on');
+                catch
+                    % nop
+                end
+            end
+        else
+            fprintf('警告 : SubSystemはライブラリです。\n');
+        end
+    else
+        fprintf('警告 : SubSystemは再利用可能関数です。\n');
+    end
 else
+    
 end
 end
 end

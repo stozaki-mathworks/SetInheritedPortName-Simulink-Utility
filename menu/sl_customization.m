@@ -11,14 +11,13 @@
 % IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 % (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
 % HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-function sl_customization(cm)
+% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.function sl_customization(cm)
 
   cm.addCustomMenuFcn('Simulink:PreContextMenu', @getMyContextMenu);
 end
 
 function schemaFcns = getMyContextMenu(callbackInfo) %#ok<INUSD>
-    schemaFcns = {@setOutportInheritName,@setInportInheritName,@setPropagatedSignal};
+    schemaFcns = {@setPropagatedSignal,@setOutportInheritName,@setInportInheritName};
 end
 
 function schema = setOutportInheritName(callbackInfo) %#ok
@@ -29,7 +28,7 @@ function schema = setOutportInheritName(callbackInfo) %#ok
     TargetBlockType = get_param(gcs, 'Type');
     end
 
-    MenuLable       = '1 Custom Set Outport Block Name';
+    MenuLable       = '2. Custom Outport : Outportブロック名を信号名に設定する';
     
       StateEnabled    = 'Enabled';
       StateHidden     = 'Hidden';
@@ -54,7 +53,7 @@ function schema = setInportInheritName(callbackInfo) %#ok
     TargetBlockType = get_param(gcs, 'Type');
     end
 
-    MenuLable       = '1 Custom Set Inport Block Name';
+    MenuLable       = '2. Custom Inport : Inportブロック名を伝播信号名に設定する';
     
       StateEnabled    = 'Enabled';
       StateHidden     = 'Hidden';
@@ -78,12 +77,14 @@ function schema = setPropagatedSignal(callbackInfo) %#ok
     TargetBlockType = get_param(gcs, 'Type');
     end
 
-    MenuLable       = '2 Custom Set Propagated Signal';
+    MenuLable       = '1. Custom Set Propagated Signal : 伝播信号名を表示する';
     
       StateEnabled    = 'Enabled';
       StateHidden     = 'Hidden';
     
-        if strcmp(TargetBlockType,'Inport')||strcmp(TargetBlockType,'Outport')
+        if strcmp(TargetBlockType,'Inport')...
+                ||strcmp(TargetBlockType,'Outport')...
+                ||strcmp(TargetBlockType,'SubSystem')
             schema.state        = StateEnabled;
             schema.callback     = @runset_ShowPropagatedSignal;
             schema.label        = MenuLable;
