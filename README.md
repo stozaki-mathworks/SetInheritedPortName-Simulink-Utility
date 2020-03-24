@@ -32,7 +32,7 @@ https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/m
 2. サブシステム内の入力ポート名を上流側信号と一致させる。また、サブシステムの上位側の出力ポートブロック名をサブシステム内の信号名に一致させる
 
 操作方法は以下のgif動画にて確認してください。
-https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/master/DetaileOoperation.gi
+https://github.com/stozaki-mathworks/SimulinkUtility_SetInheritedPortName/blob/master/DetaileOoperation.gif
 
 操作説明書として以下も参照してください。
 https://github.com/stozaki-mathworks/Simulink-Utility-SetInheritedPortName/blob/master/doc/Simulink_Utility_SetInheritedPortName.pdf
