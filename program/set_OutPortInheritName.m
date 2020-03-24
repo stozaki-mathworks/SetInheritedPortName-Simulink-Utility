@@ -89,6 +89,26 @@ if strcmp(BlkType,'Outport')
         % 2018-11-13 バスセレクター出力の信号名のポート名継承で＜＞がポート名に反映されるのを防ぐ
         SourceBlockHandle   = get_param(InportLineH,'SrcBlockHandle');
         SourceBlockType     = get_param(SourceBlockHandle,'BlockType');
+        
+        if strcmp(SourceBlockType,'SubSystem')
+            try
+                reusable = get_param(SourceBlockHandle,'RTWSystemCode');
+            catch
+                reusable = 'Auto';
+            end
+            if strcmp(reusable,'Reusable function')
+                fprintf('警告 : 接続先が再利用可能サブシステムです。\n');
+                continue
+            end
+            libBlk = get_param(SourceBlockHandle,'ReferenceBlock');
+            if ~isempty(libBlk)
+                fprintf('警告 : 接続先がライブラリブロックです。\n');
+                continue
+            end
+        else
+            % 何もしない
+        end     
+        
         if strcmp(SourceBlockType,'BusSelector')
             SignalName = regexprep(SignalName,'<|>','');
         end

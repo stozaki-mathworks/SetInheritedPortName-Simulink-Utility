@@ -89,9 +89,22 @@ elseif strcmp(BlkType,'Outport')
             SrcBlkH   = get_param(InportLineH,'SrcBlockHandle');
             SrcBlkType = get_param(SrcBlkH,'BlockType');
             if strcmp(SrcBlkType,'SubSystem')
-                % 接続元のサブシステムが再利用可能もしくはライブラリの場合はreturnする 
+                try
+                    reusable = get_param(SrcBlkH,'RTWSystemCode');
+                catch
+                    reusable = 'Auto';
+                end
+                if strcmp(reusable,'Reusable function')
+                    fprintf('警告 : 接続先が再利用可能サブシステムです。\n');
+                    continue
+                end
+                libBlk = get_param(SrcBlkH,'ReferenceBlock');
+                if ~isempty(libBlk)
+                    fprintf('警告 : 接続先がライブラリブロックです。\n');
+                    continue
+                end
             else
-
+                % 何もしない
             end            
         % 伝播表示できない場合のエラーメッセージに対象の信号名を表示するために信号名取得
         SignalName = get_param(SrcPortH,'Name');            
