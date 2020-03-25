@@ -28,7 +28,7 @@ function schema = setOutportInheritName(callbackInfo) %#ok
     TargetBlockType = get_param(gcs, 'Type');
     end
 
-    MenuLable       = '信号名をOutportブロック名に設定する';
+    MenuLable       = '>> 信号名をOutportブロック名に設定する';
     
       StateEnabled    = 'Enabled';
       StateHidden     = 'Hidden';
@@ -53,7 +53,7 @@ function schema = setInportInheritName(callbackInfo) %#ok
     TargetBlockType = get_param(gcs, 'Type');
     end
 
-    MenuLable       = '信号名をInportブロック名に設定する';
+    MenuLable       = '>> 信号名をInportブロック名に設定する';
     
       StateEnabled    = 'Enabled';
       StateHidden     = 'Hidden';
@@ -77,7 +77,7 @@ function schema = setPropagatedSignal(callbackInfo) %#ok
     TargetBlockType = get_param(gcs, 'Type');
     end
 
-    MenuLable       = '伝播信号名を表示する';
+    MenuLable       = '>> 伝播信号名を表示する';
     
       StateEnabled    = 'Enabled';
       StateHidden     = 'Hidden';

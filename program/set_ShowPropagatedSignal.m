@@ -33,7 +33,7 @@ catch
     RTWCodeVal = '';
 end
 if strcmp(RTWCodeVal,'Reusable function')
-    fprintf('警告 : Inportブロックは再利用可能関数内部のブロックです。\n');
+    fprintf('>> [警告] : Inportブロックは再利用可能関数内部のブロックです。\n');
     return
 else
     % 何もしない
@@ -67,10 +67,10 @@ if strcmp(BlkType,'Inport')
                         set_param(SrcPortH,'ShowPropagatedSignals','off');    
                         set_param(SrcPortH,'ShowPropagatedSignals','on');
                     else
-                        fprintf('警告 : マスク内のブロックのため伝播表示を行いません。: %s\n%s\n', SignalName);
+                        fprintf('>> [警告] : マスク内のブロックのため伝播表示を行いません。: %s\n%s\n', SignalName);
                     end
                 catch ME
-                    fprintf('警告 : 伝播表示が出来ない信号です。または、ライブラリ内部のブロックです。: %s\n%s\n', SignalName,ME.message);
+                    fprintf('>> [警告] : 伝播表示が出来ない信号です。または、ライブラリ内部のブロックです。: %s\n%s\n', SignalName,ME.message);
                 end         
     end
 % 対象ブロックがOutportブロックの場合    
@@ -95,12 +95,12 @@ elseif strcmp(BlkType,'Outport')
                     reusable = 'Auto';
                 end
                 if strcmp(reusable,'Reusable function')
-                    fprintf('警告 : 接続先が再利用可能サブシステムです。\n');
+                    fprintf('>> [警告] : 接続先が再利用可能サブシステムです。\n');
                     continue
                 end
                 libBlk = get_param(SrcBlkH,'ReferenceBlock');
                 if ~isempty(libBlk)
-                    fprintf('警告 : 接続先がライブラリブロックです。\n');
+                    fprintf('>> [警告] : 接続先がライブラリブロックです。\n');
                     continue
                 end
             else
@@ -114,10 +114,10 @@ elseif strcmp(BlkType,'Outport')
                     set_param(SrcPortH,'ShowPropagatedSignals','off');
                     set_param(SrcPortH,'ShowPropagatedSignals','on');
                 catch ME
-                    fprintf('警告 : 伝播表示が出来ない信号です。: %s\n%s\n', SignalName,ME.message);
+                    fprintf('>> [警告] : 伝播表示が出来ない信号です。: %s\n%s\n', SignalName,ME.message);
                 end     
         else
-            fprintf('警告 : Outportブロックは未接続です。\n');
+            fprintf('>> [警告] : Outportブロックは未接続です。\n');
         end
     end
 % 対象ブロックがサブシステムの場合    
@@ -141,11 +141,11 @@ elseif strcmp(BlkType,'SubSystem')
             end
         else
             blkName = get_param(MOutPortsLists{m},'Name');
-            fprintf('警告 : %s はライブラリです。\n',blkName);
+            fprintf('>> [警告] : %s はライブラリです。\n',blkName);
         end
     else
         blkName = get_param(MOutPortsLists{m},'Name');
-        fprintf('警告 : %s は再利用可能関数です。\n',blkName);
+        fprintf('>> [警告] : %s は再利用可能関数です。\n',blkName);
     end
 else
     

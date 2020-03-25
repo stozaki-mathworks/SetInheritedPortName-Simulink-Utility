@@ -55,7 +55,7 @@ if strcmp(BlkType,'Outport')
         RTWCodeVal = '';
     end
     if strcmp(RTWCodeVal,'Reusable function')
-        fprintf('警告 : Outportブロックは再利用可能関数内部のブロックです。\n');
+        fprintf('>> [警告] : Outportブロックは再利用可能関数内部のブロックです。\n');
         return
     else
         % 何もしない
@@ -71,7 +71,7 @@ if strcmp(BlkType,'Outport')
         
         % SrcPortHandleが-1のとき未接続のため、伝播信号名の取得ができない
         if SrcPortH == -1
-            fprintf('警告：Outportブロックは未接続です: \n');
+            fprintf('>> [警告] : Outportブロックは未接続です: \n');
             return
         end
         
@@ -97,12 +97,12 @@ if strcmp(BlkType,'Outport')
                 reusable = 'Auto';
             end
             if strcmp(reusable,'Reusable function')
-                fprintf('警告 : 接続先が再利用可能サブシステムです。\n');
+                fprintf('>> [警告] : 接続先が再利用可能サブシステムです。\n');
                 continue
             end
             libBlk = get_param(SourceBlockHandle,'ReferenceBlock');
             if ~isempty(libBlk)
-                fprintf('警告 : 接続先がライブラリブロックです。\n');
+                fprintf('>> [警告] : 接続先がライブラリブロックです。\n');
                 continue
             end
         else
@@ -125,9 +125,9 @@ if strcmp(BlkType,'Outport')
         if ~isempty(SignalName)
             try
                 set_param(Blocks,'Name',SignalName);
-                fprintf('メッセージ：Outport名を"%s"に変更しました。\n', SignalName);    
+                fprintf('>> [メッセージ] : Outport名を"%s"に変更しました。\n', SignalName);    
             catch ME
-                fprintf('警告：Outport名を設定できません。ブロック名の重複が無いか確認してください: %s\n%s\n', SignalName,ME.message);
+                fprintf('>> [警告] : Outport名を設定できません。ブロック名の重複が無いか確認してください: %s\n%s\n', SignalName,ME.message);
             end
         % 信号名または、継承信号名が設定されているとき
         elseif ~isempty(PropSignalName)
@@ -136,22 +136,22 @@ if strcmp(BlkType,'Outport')
             try
                 if ~any(regexp(PropSignalName,','))
                     set_param(Blocks,'Name',PropSignalName);
-                    fprintf('メッセージ：Outport名を"%s"に変更しました。\n', PropSignalName);
+                    fprintf('>> [メッセージ] : Outport名を"%s"に変更しました。\n', PropSignalName);
                 else
                     set_param(Blocks,'Name',['<', PropSignalName, '>']);
-                    fprintf('警告：Outport名"%s" に接続されるバス信号はバス信号名が無いため、要素名を使った信号名を付与します。\n', ['<', PropSignalName, '>']);
+                    fprintf('>> [警告] : Outport名"%s" に接続されるバス信号はバス信号名が無いため、要素名を使った信号名を付与します。\n', ['<', PropSignalName, '>']);
                 end
             catch ME
                 % 名前の重複等でエラーが発生した場合、メッセージを出力
-                fprintf('警告：Outport名を設定できません。ブロック名の重複が無いか確認してください: %s\n%s\n', PropSignalName,ME.message);
+                fprintf('>> [警告] : Outport名を設定できません。ブロック名の重複が無いか確認してください: %s\n%s\n', PropSignalName,ME.message);
             end
             
             % マスクサブシステム内部の信号を継承する場合はメッセージを出力する
             else
-                fprintf('警告 : Outportブロックはマスク内のブロックまたは、ライブラリ内部のブロックです。\n');
+                fprintf('>> [警告] : Outportブロックはマスク内のブロックまたは、ライブラリ内部のブロックです。\n');
             end
         else
-             fprintf('警告 : Outportブロックに接続している信号名及び、継承信号名に名前が付与されていません。\n');
+             fprintf('>> [警告] : Outportブロックに接続している信号名及び、継承信号名に名前が付与されていません。\n');
         end
     end
     try
