@@ -140,10 +140,12 @@ elseif strcmp(BlkType,'SubSystem')
                 end
             end
         else
-            fprintf('警告 : SubSystemはライブラリです。\n');
+            blkName = get_param(MOutPortsLists{m},'Name');
+            fprintf('警告 : %s はライブラリです。\n',blkName);
         end
     else
-        fprintf('警告 : SubSystemは再利用可能関数です。\n');
+        blkName = get_param(MOutPortsLists{m},'Name');
+        fprintf('警告 : %s は再利用可能関数です。\n',blkName);
     end
 else
     
