@@ -1,3 +1,4 @@
+[![View SetInheritedPortName-Simulink-Utility on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://jp.mathworks.com/matlabcentral/fileexchange/75017-setinheritedportname-simulink-utility)
 # SetInheritedPortName-Simulink-Utility
 
 Copyright (c) 2020, The MathWorks, Inc.
@@ -41,5 +42,3 @@ https://github.com/stozaki-mathworks/Simulink-Utility-SetInheritedPortName/blob/
 https://jp.mathworks.com/help/simulink/mdl_gd/maab/jc_0008definitionofsignalnames.html
 
 https://jp.mathworks.com/help/simulink/mdl_gd/maab/jc_0009signalnamepropagation.html
-
-[![View SetInheritedPortName-Simulink-Utility on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://jp.mathworks.com/matlabcentral/fileexchange/75017-setinheritedportname-simulink-utility)
